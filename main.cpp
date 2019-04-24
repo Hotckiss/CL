@@ -68,7 +68,10 @@ int main() {
 		convolutionFunctor((int)N, (int)(M - 1) / 2, dev_A, dev_B, dev_C);
 
 		queue.enqueueReadBuffer(dev_C, CL_TRUE, 0, C_buf_size, C);
-
+		
+		std::cout.precision(3);
+        	std::cout << std::fixed;
+		
 		for (size_t i = 0; i < N; i++) {
 			for (size_t j = 0; j < N; j++)
 				std::cout << C[i * N + j] << ' ';
