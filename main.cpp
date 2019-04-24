@@ -63,7 +63,8 @@ int main() {
 
 		// load named kernel from opencl source
 		cl::Kernel convolutionKernel(program, "convolution");
-		cl::KernelFunctor convolutionFunctor(convolutionKernel, queue, cl::NullRange, cl::NDRange(N + BLOCK_SIZE - 1, N + BLOCK_SIZE - 1), cl::NDRange(BLOCK_SIZE, BLOCK_SIZE));
+		size_t block_cnt = (N + BLOCK_SIZE - 1) / BLOCK_SIZE;
+		cl::KernelFunctor convolutionFunctor(convolutionKernel, queue, cl::NullRange, cl::NDRange(BLOCK_SIZE * block_cnt, BLOCK_SIZE * block_cnt), cl::NDRange(BLOCK_SIZE, BLOCK_SIZE));
 		convolutionFunctor((int)N, (int)(M - 1) / 2, dev_A, dev_B, dev_C);
 
 		queue.enqueueReadBuffer(dev_C, CL_TRUE, 0, C_buf_size, C);
